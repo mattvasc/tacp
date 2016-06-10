@@ -68,6 +68,7 @@ function Magica()
 	}
 	document.getElementById("entradas").style.display = "none"; // OCULTA INPUT FIELDS
  	document.getElementById("bnt2").style.display = "inline"; // E MOSTRA BT2
+  document.getElementById("bnt3").style.display = "inline";
 	criaTabela(prodqtd,maqqtd);
 }
 
@@ -129,7 +130,7 @@ function compararMatrizes(matriz1, matriz2, i,j)
                 return 0;
     return 1;
 }
-/* 
+/*
 // Dada uma matriz de I produtos e J máquinas, onde no slot i,j temos o número do produto/máquina
 // e no slot i+1, j+1 temos os slots destinado para as somas
 
@@ -165,7 +166,7 @@ function ordenar(vetor,i,j)
     {
         min = i;
         for(c=i+1; c<j;c++)
-            if(vetor[i]<vetor[min]) 
+            if(vetor[i]<vetor[min])
                 min = i;
         aux = vetor[i]; // A troca aqui seria a linha toda e não só um elemento
         vetor[i] = vetor[min]; //idem, forzinho
