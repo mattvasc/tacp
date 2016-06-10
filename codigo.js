@@ -58,6 +58,14 @@ function Magica()
 		document.getElementById("prodtxt").focus();
 		return;
 	}
+	else if(prodqtd>=45 || maqqtd>=45)
+	{
+		alert("Por limitações computacionais, entre com uma matriz de até 45x45");
+		document.getElementById("prodtxt").value = "";
+		document.getElementById("maqtxt").value = "";
+		document.getElementById("prodtxt").focus();
+		return;
+	}
 	document.getElementById("entradas").style.display = "none"; // OCULTA INPUT FIELDS
  	document.getElementById("bnt2").style.display = "inline"; // E MOSTRA BT2
 	criaTabela(prodqtd,maqqtd);
