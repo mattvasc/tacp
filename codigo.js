@@ -1,4 +1,5 @@
 var matriz = new Array([],[]);
+var iteracoes;
 var prodqtd;
 var maqqtd;
 function isInt(value) {
@@ -74,23 +75,27 @@ function Magica()
 
 function Magica2()
 {
-	 alert("Chama funcao calcular do codigo.js");
-         lerMatriz();
-	 if (confirm('Gostaria de tentar com outra entrada?')) {
+//	 alert("Chama funcao calcular do codigo.js");
+   lerMatriz();
+   document.getElementById("resultado").style.display = "inline";
+   iteracoes = 0;
+   roc();
+
+	 /*if (confirm('Gostaria de tentar com outra entrada?')) {
 		document.getElementById("entradas").style.display = "initial"; // OCULTA INPUT FIELDS
 		document.getElementById("bnt2").style.display = "none";
 		limpaTabela();
 }	 else {
 		window.location.href = "obrigado.html";
-}
+}*/
 }
 
 function lerMatriz()
 {
     var a,b;
-    matriz = new Array(prodqtd);
+    matriz = new Array();
     for(b=0;b<prodqtd;b++){
-        matriz[b] = new Array(maqqtd);
+        matriz[b] = new Array();
         for(a=0; a<maqqtd;a++)
         {
             if ($("#p"+(b+1)+"m"+(a+1)).is(":checked"))
@@ -99,6 +104,12 @@ function lerMatriz()
                 matriz[b][a] = 0;
         }
     }
+    matriz[prodqtd] = new Array();
+    matriz[+prodqtd+1] = new Array();
+    for(b=0;b<prodqtd;b++)
+      matriz[b][maqqtd] = b; // Definiu os prods ids
+    for(a=0; a<maqqtd;a++)
+      matriz[prodqtd][a] = a; // Definiu os maqs ids
 }
 
 function gerarMatrizcna()
@@ -106,15 +117,42 @@ function gerarMatrizcna()
 
 }
 
+function imprimeMatriz(matriz_arg,destino)
+{
+  iteracoes++;
+  document.getElementById(destino).innerHTML += "A matriz ficará assim na "+iteracoes+"ª iteração: <br /><table id ='ite"+iteracoes+"'> </table>";
+  var table = document.getElementById("ite"+iteracoes);
+  for(b=0;b<maqqtd;b++)
+  {
+    var row = table.insertRow(b);
+    row.innerHTML = "Máquina " + (b+1);
+    for(c=0;c<prodqtd;c++)
+    {		var cell = row.insertCell(c);
+        cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'">';
+        if(matriz_arg[c][b]==1)
+          $('#p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'').prop('checked', true);
+    }
+  }
+  var head = table.insertRow(0);
+    for(c=0;c<prodqtd;c++)
+  {
+    var cell1 = head.insertCell(c);
+    cell1.innerHTML = "P"+(c+1);
+  }
+  cell1 = head.insertCell(0);
+  cell1.innerHTML = "VHDL";
+
+}
 function roc()
 {
+    imprimeMatriz(matriz_aux, "roc");
     var matriz_aux = new Array([],[]);
     copiarMatrizes(matriz, matriz_aux, prodqtd,maqqtd);
     somarLinhas(matriz_aux, prodqtd, maqqtd);
     ordenaMatrizLinhas(matriz_aux, prodqtd, maqqtd);
     somarColunas(matriz_aux, prodqtd, maqqtd);
     ordenaMatrizColunas(matriz_aux, prodqtd, maqqtd);
-    imprimeMatriz(matriz_aux);
+
     if(!compararMatrizes(matriz, matriz_aux, i,j)) // Se tem que fazer mais iteracoes
     {
         copiarMatrizes(matriz_aux,matriz, prodqtd, maqqtd);
@@ -130,31 +168,51 @@ function compararMatrizes(matriz1, matriz2, i,j)
                 return 0;
     return 1;
 }
+
+function somarLinhas(matriz_arg, i, j)
+{
+    var a,b;
+    for(b=0;b<j;b++)
+      for(a=0;a<i;a++)
+      {
+        matriz_arg[i+1][b] += matriz_arg[a][b];
+      }
+}
+
+function somarColunas(matriz_arg, i, j)
+{
+  var a,b;
+  for(b=0;b<i;b++)
+    for(a=0;a<j;a++)
+    {
+      matriz_arg[b][j+1] += matriz_arg[b][a];
+    }
+}
+
+var aux = new Array();
+for(c=0; c<linha+2; c++)
+  aux[c]= m[l][c];
+  m[l][c] = m[d][c];
+  m[d][c] = aux[c];
 /*
 // Dada uma matriz de I produtos e J máquinas, onde no slot i,j temos o número do produto/máquina
 // e no slot i+1, j+1 temos os slots destinado para as somas
 
-function somarLinhas(matriz, i, j)
-{
-    //Fazer o somatório das linhas e salvar no slot i+1
-}
-function somarColunas(matriz, i, j)
-{
-    // fazer o somatório das colunas e salvar no slot j+1
-}
+
+
 
 function copiarMatrizes(matriz1, matriz2, i,j)
 {
 
 }
 
-function ordenaMatrizLinha(matriz, i, j)
+function ordenaMatrizLinha(matriz_arg, i, j)
 {
     // Usar como referencia a função ordenar
     // trocar a linha inteira
 }
 
-function ordenaMatrizColuna(matriz, i, j)
+function ordenaMatrizColuna(matriz_arg, i, j)
 {
   //idem acima
 }
