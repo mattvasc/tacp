@@ -45,7 +45,7 @@ function Magica()
         maqqtd = document.getElementById("maqtxt").value;
 	// Verificando se as entradas são válidas
 	if(!isInt(prodqtd) || !isInt(maqqtd)){
-		alert("Por favor, entre com entradas válidas primeiramente!");
+		alert("Insira apenas entradas válidas (numérica).");
 		document.getElementById("prodtxt").value = "";
 		document.getElementById("maqtxt").value = "";
 		document.getElementById("prodtxt").focus();
@@ -53,7 +53,7 @@ function Magica()
 	}
 	if(prodqtd<=0 || maqqtd<=0)
 	{
-		alert("Apenas Números válidos por favor");
+		alert("Insira apenas números válidos (maior do que 0).");
 		document.getElementById("prodtxt").value = "";
 		document.getElementById("maqtxt").value = "";
 		document.getElementById("prodtxt").focus();
@@ -159,11 +159,11 @@ function roc()
         roc();
     }
 }
-function compararMatrizes(matriz1, matriz2, i,j)
+function compararMatrizes(matriz1, matriz2)
 {
     var b,c;
-    for(b=0;b<i;jb++)
-        for(c=o;c<j;c++)
+    for(b=0;b<prodqtd;jb++)
+        for(c=o;c<maqqtd;c++)
             if(matriz1[b][c]!==matriz2[b][c])
                 return 0;
     return 1;
@@ -173,14 +173,14 @@ function somarLinhas(matriz_arg)
 {
 	var a,b,c;
     
-	for(a=0; a<maq; a++){
-		matriz_arg[a][+prodqtd+1] = 0;
+	for(a=0; a<prodqtd; a++){
+		matriz_arg[a][+maqqtd+1] = 0;
 	}
 	
-	for(a=0;a<maqqtd;a++){
+	for(a=0;a<prodqtd;a++){
     	c=1;
-    	for(b=+prodqtd-1;b>=0;b++){
-        	matriz_arg[a][+prod+1] += ((matriz_arg[a][b])*c);
+    	for(b=+maqqtd-1;b>=0;b++){
+        	matriz_arg[a][+maqqtd+1] += ((matriz_arg[a][b])*c);
         	c *= 2;
       	}
    }
@@ -189,14 +189,14 @@ function somarLinhas(matriz_arg)
 function somarColunas(matriz_arg)
 {
   var a,b;
-  for(a=0; a<prodqtd; a++){
-		matriz_arg[+maqqtd+1][a] = 0;
+  for(a=0; a<maqqtd; a++){
+		matriz_arg[+prodqtd+1][a] = 0;
 	}
 	
-	for(b=0; b<prodqtd; b++){
+	for(b=0; b<maqqtd; b++){
 	c=1;
-		for(a=+maqqtd-1; a>=0; a--){
-			matriz_arg[+maqqtd+1][b] += ((matriz_arg[a][b])*c);
+		for(a=+prodqtd-1; a>=0; a--){
+			matriz_arg[+prodqtd+1][b] += ((matriz_arg[a][b])*c);
 			c *= 2;
 		}
 	}
@@ -212,8 +212,8 @@ function copiarMatrizes(matriz1, matriz2)
 {
 	var a,b;
 	
-	for(a=0; a<maqqtd; a++){
-		for(b=0; b<prodqtd; b++){
+	for(a=0; a<prodqtd; a++){
+		for(b=0; b<maqqtd; b++){
 			matriz2[a][b] = matriz1[a][b];
 		}
 	}
@@ -223,13 +223,13 @@ function ordenaMatrizLinha(matriz_arg)
 {
     var a, b, c, aux;
     
-    for(a=0; a<maqqtd; a++){
-		for(b=+a+1; b<+maqqtd-1; b++){
-			if(matriz[a][+prod+1] < matriz[b][+prod+1]){
-				for(c=0; c<=+prod+1; c++){
-					aux=matriz[a][c];
-					matriz[a][c]=matriz[b][c];
-					matriz[b][c]=aux;
+    for(a=0; a<prodqtd; a++){
+		for(b=+a+1; b<+prodqtd-1; b++){
+			if(matriz_arg[a][+maqqtd+1] < matriz_arg[b][+maqqtd+1]){
+				for(c=0; c<=+maqqtd+1; c++){
+					aux=matriz_arg[a][c];
+					matriz_arg[a][c]=matriz_arg[b][c];
+					matriz_arg[b][c]=aux;
 				}
 			}
 		}
@@ -240,13 +240,13 @@ function ordenaMatrizColuna(matriz_arg)
 {
   	var a, b, c, aux;
   	
-  	for(a=0; a<prodqtd; a++){
-		for(b=+a+1; b<+prod-1; b++){
-			if(matriz[+maq+1][i] < matriz[+maq+1][j]){
-				for(c=0; c<=+maq+1; c++){
-					aux=matriz[c][b];
-					matriz[c][b]=matriz[c][a];
-					matriz[c][a]=aux;
+  	for(a=0; a<maqqtd; a++){
+		for(b=+a+1; b<+maqqtd-1; b++){
+			if(matriz_arg[+prodqtd+1][i] < matriz_arg[+prodqtd+1][j]){
+				for(c=0; c<=+prodqtd+1; c++){
+					aux=matriz_arg[c][b];
+					matriz_arg[c][b]=matriz_arg[c][a];
+					matriz_arg[c][a]=aux;
 				}
 			}
 		}
