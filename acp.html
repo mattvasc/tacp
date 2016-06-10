@@ -1,0 +1,64 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <script type="text/javascript" src="jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="codigo.js" charset="UTF-8"></script>
+    <script type="text/css" src="style.css" charset="UTF-8"></script>
+    <title>Trabalho </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body id="bódi">
+    <div id="inputdiv">
+    <center>
+        <fieldset id="entradas" >
+            <legend>Informações:</legend>
+            <label> Número de Produtos:
+            <input type="text" name="prodtxt" id="prodtxt">
+            </label><br /> <br />
+            <label> Número de Máquinas
+            <input type="text" name="maqtxt" id="maqtxt">
+            </label> <br /> <br />
+            <input type="button" id="btn1" value="Próximo" onclick="Magica()"> 
+        </fieldset>
+    </center>
+    </div>
+    <div id="mtzdiv">
+        <br />
+        <table id="tblin" border="1">
+        </table> <br />
+        <input type="button" id="bnt3" value="Voltar" style="display:none" onclick="location.reload(); ">
+        <input type="button" id="bnt2" value="Calcular" style="display:none" onclick="Magica2()">
+    </div>
+    <section id="resultado">
+        <div id="cna">
+            cna goes here
+            asdfsadf<br />
+            asdfasdf<br />
+        </div>
+        <div id="roc">
+            Rocky Balboa wins here.<br />
+            asdfsadfsdf<br />
+            sadfasdf<br />
+            asdfsadf<br />
+        </div>
+    </section>
+</body>
+<script type="text/javascript">
+
+document.getElementById("prodtxt")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById("maqtxt").focus();
+    }
+});
+
+document.getElementById("maqtxt")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById("btn1").click();
+    }
+});
+</script>
+</html>
