@@ -188,7 +188,7 @@ function somarLinhas(matriz_arg)
 
 function somarColunas(matriz_arg)
 {
-  var a,b;
+  var a,b,c;
   for(a=0; a<prodqtd; a++){
 		matriz_arg[+maqqtd+1][a] = 0;
 	}
