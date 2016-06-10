@@ -126,7 +126,7 @@ function imprimeMatriz(matriz_arg,destino)
   {
     var row = table.insertRow(b);
     row.innerHTML = "Máquina " + (b+1);
-    for(c=0;c<prodqtd;c++)
+    for(c=0;c<prodqtd+1;c++)
     {		var cell = row.insertCell(c);
         cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'">';
         if(matriz_arg[c][b]==1)
@@ -169,24 +169,37 @@ function compararMatrizes(matriz1, matriz2, i,j)
     return 1;
 }
 
-function somarLinhas(matriz_arg, i, j)
+function somarLinhas(matriz_arg)
 {
-    var a,b;
-    for(b=0;b<j;b++)
-      for(a=0;a<i;a++)
-      {
-        matriz_arg[i+1][b] += matriz_arg[a][b];
-      }
+	var a,b,c;
+    
+	for(a=0; a<maq; a++){
+		matriz_arg[a][prodqtd+1] = 0;
+	}
+	
+	for(a=0;a<maqqtd;a++){
+    	c=1;
+    	for(b=prodqtd-1;b>=0;b++){
+        	matriz_arg[a][prod+1] += matriz_arg[a][b]*c;
+        	c *= 2;
+      	}
+   }
 }
 
-function somarColunas(matriz_arg, i, j)
+function somarColunas(matriz_arg)
 {
   var a,b;
-  for(b=0;b<i;b++)
-    for(a=0;a<j;a++)
-    {
-      matriz_arg[b][j+1] += matriz_arg[b][a];
-    }
+  for(a=0; a<prodqtd; a++){
+		matriz_arg[maqqtd+1][a] = 0;
+	}
+	
+	for(b=0; b<prodqtd; b++){
+	c=1;
+		for(a=maqqtd-1; a>=0; a--){
+			matriz_arg[maqqtd+1][b] += matriz_arg[a][b]*c;
+			c *= 2;
+		}
+	}
 }
 
 var aux = new Array();
