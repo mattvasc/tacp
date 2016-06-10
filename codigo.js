@@ -145,8 +145,8 @@ function imprimeMatriz(matriz_arg,destino)
 }
 function roc()
 {
-    imprimeMatriz(matriz_aux, "roc");
     var matriz_aux = new Array([],[]);
+    //imprimeMatriz(matriz_aux, "roc");
     copiarMatrizes(matriz, matriz_aux, prodqtd,maqqtd);
     somarLinhas(matriz_aux, prodqtd, maqqtd);
     ordenaMatrizLinhas(matriz_aux, prodqtd, maqqtd);
@@ -188,7 +188,7 @@ function somarLinhas(matriz_arg)
 
 function somarColunas(matriz_arg)
 {
-  var a,b,c;
+  var a,b;
   for(a=0; a<prodqtd; a++){
 		matriz_arg[+maqqtd+1][a] = 0;
 	}
@@ -202,34 +202,57 @@ function somarColunas(matriz_arg)
 	}
 }
 
-var aux = new Array();
-for(c=0; c<linha+2; c++)
-  aux[c]= m[l][c];
-  m[l][c] = m[d][c];
-  m[d][c] = aux[c];
-/*
 // Dada uma matriz de I produtos e J máquinas, onde no slot i,j temos o número do produto/máquina
 // e no slot i+1, j+1 temos os slots destinado para as somas
 
 
 
 
-function copiarMatrizes(matriz1, matriz2, i,j)
+function copiarMatrizes(matriz1, matriz2)
 {
-
+	var a,b;
+	
+	for(a=0; a<maqqtd; a++){
+		for(b=0; b<prodqtd; b++){
+			matriz2[a][b] = matriz1[a][b];
+		}
+	}
 }
 
-function ordenaMatrizLinha(matriz_arg, i, j)
+function ordenaMatrizLinha(matriz_arg)
 {
-    // Usar como referencia a função ordenar
-    // trocar a linha inteira
+    var a, b, c, aux;
+    
+    for(a=0; a<maqqtd; a++){
+		for(b=+a+1; b<+maqqtd-1; b++){
+			if(matriz[a][+prod+1] < matriz[b][+prod+1]){
+				for(c=0; c<=+prod+1; c++){
+					aux=matriz[a][c];
+					matriz[a][c]=matriz[b][c];
+					matriz[b][c]=aux;
+				}
+			}
+		}
+	}
 }
 
-function ordenaMatrizColuna(matriz_arg, i, j)
+function ordenaMatrizColuna(matriz_arg)
 {
-  //idem acima
+  	var a, b, c, aux;
+  	
+  	for(a=0; a<prodqtd; a++){
+		for(b=+a+1; b<+prod-1; b++){
+			if(matriz[+maq+1][i] < matriz[+maq+1][j]){
+				for(c=0; c<=+maq+1; c++){
+					aux=matriz[c][b];
+					matriz[c][b]=matriz[c][a];
+					matriz[c][a]=aux;
+				}
+			}
+		}
+	}
 }
-
+/*
 function ordenar(vetor,i,j)
 {
     var min,c, aux;
