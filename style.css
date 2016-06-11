@@ -11,11 +11,11 @@
   
 }
 #entradas{
-    background-color: AAA;
+    background-color: 009999;
 }
 
 #bódi{
-    background-color: AAF;
+    background-color: 66CCCC;
     height:99vh;
     
 }
@@ -25,10 +25,15 @@
 }
 div#roc {
     width: 50%;
-    background: red;
+    background: D0D0D0;
     float: left;
 }
 div#cna{
     margin-left: 50%;
-    background: gray;
+    background: D0D0D0;
+}
+
+input[type=checkbox]
+{
+    cursor: pointer;
 }
