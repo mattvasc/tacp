@@ -1,7 +1,271 @@
-var matriz = new Array([],[]);
+var matriz;
+var matrizb;
 var iteracoes;
 var prodqtd;
 var maqqtd;
+function roc()
+{
+    var matriz_aux;
+
+  //
+    matriz = somarLinhas(matriz);
+  //  matriz = somarColunas(matriz_aux);
+    matriz_aux = copiarMatrizes(matriz, matriz_aux);
+    matriz_aux = ordenaMatrizLinhas(matriz_aux);
+  //  matriz_aux =  ordenaMatrizColunas(matriz_aux);
+
+    if(!compararMatrizes(matriz, matriz_aux)) // Se tem que fazer mais iteracoes
+    {
+        matriz = copiarMatrizes(matriz_aux,matriz); // origem, destino
+        imprimeMatriz(matriz_aux, "roc");
+        roc();
+    }
+
+}
+function cna()
+{
+  gerarMatrizcna();
+}
+
+function lerMatriz() // FULL OK
+{
+    var a,b;
+    matriz = [];
+    for(b=0;b<prodqtd;b++){
+        matriz[b] = [];
+        for(a=0; a<(+maqqtd+2);a++)
+        {
+          if(a>=maqqtd)
+          {
+            matriz[b][a] = 0;
+          }
+          else
+            if ($("#p"+(b+1)+"m"+(a+1)).is(":checked"))
+                matriz[b][a] = 1;
+            else
+                matriz[b][a] = 0;
+        }
+    }
+    matriz[prodqtd] = []; // Criando slot para id
+    matriz[(+prodqtd+1)] = []; // Criando slot para soma
+    for(b=0;b<prodqtd;b++)
+      matriz[b][maqqtd] = b; // Definiu os prods ids
+    for(a=0; a<maqqtd;a++){
+      matriz[prodqtd][a] = a; // Definiu os maqs ids
+      matriz[+prodqtd+1][a] = 0; // Definiu as pré-somas
+    }
+    matriz[prodqtd][a] = 0; matriz[prodqtd][+a+1] = 0; // Definindo como 0 as quinas da lixeira
+    matriz[(+prodqtd+1)][a] = 0;matriz[(+prodqtd+1)][+a+1] = 0;
+}
+
+function gerarMatrizcna()
+{
+  matrizb = [];
+  var a,b,c;
+  for(a=0;a<maqqtd;a++){ // Criando a matriz em O(maq²);
+      matrizb[a] = [];
+      for(b=0;b<maqqtd;b++)
+          matrizb[a][b] = a===b ? NaN : 0; // Linha de ouro, usei um operador ternário
+  }
+  matrizb[++a] = []; // Criando slot forçado para salvar o resultado das somas.
+  // A PARTIR DAQUI TA ERRADO
+  for(a=0;a<prodqtd;a++){ // Para cada produto, faca:
+    for(b=0;b<+maqqtd-1;b++) // Escolha um pivo, de 0 até maq-1
+    {
+      if(matriz[a][b]==0) // Se o pivo for zero
+        continue; // Avance o Pivo
+      for(c=b+1;c<maqqtd;c++) // para todas as Maquinas apos o pivo
+      {
+
+        if(matriz[a][b]==matriz[a][c] && matriz[a][b] == 1)
+        {
+          matrizb[b][c] += 1;
+          matrizb[c][b] += 1;
+        }
+      }
+    }
+  }
+  // ATÉ AQUI TA ERRADO
+}
+
+function imprimeMatriz(matriz_arg,destino)
+{
+  iteracoes++;
+  document.getElementById(destino).innerHTML += "A matriz via "+destino+" ficará assim na "+iteracoes+"ª iteração: <br /><table border='1' id ='ite"+iteracoes+"'> </table>";
+  var table = document.getElementById("ite"+iteracoes);
+  for(b=0;b<maqqtd;b++)
+  {
+    var row = table.insertRow(b);
+    row.innerHTML = "Máquina " + (matriz_arg[prodqtd][b]+1);
+    for(c=0;c<prodqtd;c++)
+    {		var cell = row.insertCell(c);
+        cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'">';
+        if(matriz_arg[c][b]==1)
+          $('#p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'').prop('checked', true);
+    }
+  }
+  var head = table.insertRow(0);
+    for(c=0;c<prodqtd;c++)
+  {
+    var cell1 = head.insertCell(c);
+    cell1.innerHTML = "P"+(matriz_arg[c][maqqtd]+1);
+  }
+  cell1 = head.insertCell(0);
+  cell1.innerHTML = "VHDL";
+
+}
+
+function compararMatrizes(matriz1, matriz2)
+{
+    var b;
+    for(b=0;b<prodqtd;b++) // Só olha os IDS
+      if(matriz1[b][maqqtd]!=matriz2[b][maqqtd])
+                return 0;
+    for(b=0;b<maqqtd;b++) // Só olha os IDS
+      if(matriz1[prodqtd][b]!==matriz2[prodqtd][b])
+        return 0;
+    return 1;
+}
+
+function somarLinhas(matriz_arg)
+{
+	var a,b,c;
+  // Zerando os valores da soma anterior
+	for(a=0; a<+prodqtd; a++){
+		matriz_arg[a][+maqqtd+1] = 0;
+	}
+  // Calculando a soma
+	for(a=0;a<maqqtd;a++){
+    	c=1;
+    	for(b=(+prodqtd-1);b>=0;b--){
+        	matriz_arg[+prodqtd+1][a] += ((matriz_arg[b][a])*c);
+        	c *= 2;
+      	}
+   }
+   return matriz_arg;
+}
+
+function somarColunas(matriz_arg)
+{
+  var a,b;
+  //Zerando o valor das somas anteriores
+  for(a=0; a<maqqtd; a++){
+		matriz_arg[+prodqtd+1][a] = 0;
+	}
+
+  //Calculando a soma
+	for(b=0; b<maqqtd; b--){
+	c=1;
+		for(a=+prodqtd-1; a>=0; a--){
+			matriz_arg[+prodqtd+1][b] += ((matriz_arg[a][b])*c);
+			c *= 2;
+		}
+	}
+}
+
+function copiarMatrizes(matriz1, matriz2) // ORIGEM, DESTINO
+{
+	var a,b;
+  matriz2 = []; // Faltou essa linha
+	for(a=0; a<(+prodqtd+2); a++){
+    matriz2[a] = []; // E essa também
+		for(b=0; b<(+maqqtd+2); b++){
+			matriz2[a][b] = matriz1[a][b];
+		}
+	}
+  return matriz2;
+}
+
+function ordenaMatrizLinhas(matriz_arg)
+{
+  matriz_arg = ordenaLinhaRecursiva(matriz_arg, 0);
+  return matriz_arg;
+}
+
+function ordenaMatrizColunas(matriz_arg)
+{
+  matriz_arg = ordenaLinhaRecursiva(matriz_arg, 0);
+  return matriz_arg;
+}
+
+
+function ordenaLinhaRecursiva(matriz_arg, indice)
+{
+  if(indice<(+maqqtd-1))
+  {
+    var a, max, aux1, aux2;
+    max = indice;
+    for(a=(+indice+1); a<+maqqtd;a++) // Para todas as maquinas
+    {
+      if( matriz_arg[+prodqtd+1][a] > matriz_arg[+prodqtd+1][max])
+        max = a;
+    }
+    if(max!==indice)
+    {
+      for(a=0;a<+prodqtd+2;a++) // Copiando a linha inteira
+      {
+        aux1 = matriz_arg[a][max];
+        aux2 =  matriz_arg[a][indice]; // Só criei isso pq sou noob em javascript
+        matriz_arg[a][max] = aux2;
+        matriz_arg[a][indice] = aux1;
+      }
+    }
+    matriz_arg = ordenaLinhaRecursiva(matriz_arg, ++indice);
+  }
+    return matriz_arg;
+}
+/*
+function ordenaColunaRecursiva(matriz_arg, indice)
+{
+  if(indice<(+prodqtd-1))
+  {
+    var a, max, aux1, aux2;
+    max = indice;
+    for(a=(+indice+1); a<prodqtd;a++)
+    {
+      if( matriz_arg[+prodqtd+1][a] > matriz_arg[+prodqtd+1][max])
+        max = a;
+    }
+    if(max!==indice)
+    {
+      for(a=0;a<+prodqtd+2;a++)
+      {
+        aux1 = matriz_arg[a][max];
+        aux2 =  matriz_arg[a][indice]; // Só criei isso pq sou noob em javascript
+        matriz_arg[a][max] = aux2;
+        matriz_arg[a][indice] = aux1;
+      }
+    }
+    matriz_arg = ordenaLinhaRecursiva(matriz_arg, ++indice);
+  }
+    return matriz_arg;
+}*/
+
+
+/*
+
+Historia@123@4@APROVADO@10@100
+pao
+
+*/
+/*
+function ordenaMatrizColuna(matriz_arg)
+{
+  	var a, b, c, aux;
+
+  	for(a=0; a<maqqtd; a++){
+		for(b=+a+1; b<+maqqtd-1; b++){
+			if(matriz_arg[+prodqtd+1][i] < matriz_arg[+prodqtd+1][j]){
+				for(c=0; c<=+prodqtd+1; c++){
+					aux=matriz_arg[c][b];
+					matriz_arg[c][b]=matriz_arg[c][a];
+					matriz_arg[c][a]=aux;
+				}
+			}
+		}
+	}
+}*/
+
 function isInt(value) {
   return !isNaN(value) &&
          parseInt(Number(value)) == value &&
@@ -12,40 +276,14 @@ function limpaTabela()
 	var table = document.getElementById("tblin");
 		table.innerHTML = "";
 }
-function criaTabela(prodqtd,maqqtd)
-{
-
-		var b,c;
-		var table = document.getElementById("tblin");
-		table.innerHTML = "";
-		for(b=0;b<maqqtd;b++)
-		{
-			var row = table.insertRow(b);
-			row.innerHTML = "Máquina " + (b+1);
-			for(c=0;c<prodqtd;c++)
-			{		var cell = row.insertCell(c);
-					cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'">';
-
-			}
-		}
-		var head = table.insertRow(0);
-			for(c=0;c<prodqtd;c++)
-		{
-			var cell1 = head.insertCell(c);
-			cell1.innerHTML = "P"+(c+1);
-		}
-		cell1 = head.insertCell(0);
-		cell1.innerHTML = "VHDL";
-}
-
 function Magica()
 {
 	// Tentando pegar entradas
-        prodqtd = document.getElementById("prodtxt").value;
-        maqqtd = document.getElementById("maqtxt").value;
+    prodqtd = document.getElementById("prodtxt").value;
+    maqqtd = document.getElementById("maqtxt").value;
 	// Verificando se as entradas são válidas
 	if(!isInt(prodqtd) || !isInt(maqqtd)){
-		alert("Por favor, entre com entradas válidas primeiramente!");
+		alert("Insira apenas entradas válidas (numérica).");
 		document.getElementById("prodtxt").value = "";
 		document.getElementById("maqtxt").value = "";
 		document.getElementById("prodtxt").focus();
@@ -53,7 +291,7 @@ function Magica()
 	}
 	if(prodqtd<=0 || maqqtd<=0)
 	{
-		alert("Apenas Números válidos por favor");
+		alert("Insira apenas números válidos (maior do que 0).");
 		document.getElementById("prodtxt").value = "";
 		document.getElementById("maqtxt").value = "";
 		document.getElementById("prodtxt").focus();
@@ -80,156 +318,32 @@ function Magica2()
    document.getElementById("resultado").style.display = "inline";
    iteracoes = 0;
    roc();
-
-	 /*if (confirm('Gostaria de tentar com outra entrada?')) {
-		document.getElementById("entradas").style.display = "initial"; // OCULTA INPUT FIELDS
-		document.getElementById("bnt2").style.display = "none";
-		limpaTabela();
-}	 else {
-		window.location.href = "obrigado.html";
-}*/
+   cna();
 }
 
-function lerMatriz()
-{
-    var a,b;
-    matriz = new Array();
-    for(b=0;b<prodqtd;b++){
-        matriz[b] = new Array();
-        for(a=0; a<maqqtd;a++)
-        {
-            if ($("#p"+(b+1)+"m"+(a+1)).is(":checked"))
-                matriz[b][a] = 1;
-            else
-                matriz[b][a] = 0;
-        }
-    }
-    matriz[prodqtd] = new Array();
-    matriz[+prodqtd+1] = new Array();
-    for(b=0;b<prodqtd;b++)
-      matriz[b][maqqtd] = b; // Definiu os prods ids
-    for(a=0; a<maqqtd;a++)
-      matriz[prodqtd][a] = a; // Definiu os maqs ids
-}
-
-function gerarMatrizcna()
+function criaTabela(prodqtd,maqqtd)
 {
 
+		var b,c;
+		var table = document.getElementById("tblin");
+		table.innerHTML = "";
+		for(b=0;b<maqqtd;b++)
+		{
+			var row = table.insertRow(b);
+			row.innerHTML = "Máquina " + (b+1);
+			for(c=0;c<prodqtd;c++)
+			{		var cell = row.insertCell(c);
+					cell.onclick = $( "#p"+(c+1) +"m"+(b+1) ).prop( "checked", true );
+					cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'">';
+
+			}
+		}
+		var head = table.insertRow(0);
+			for(c=0;c<prodqtd;c++)
+		{
+			var cell1 = head.insertCell(c);
+			cell1.innerHTML = "P"+(c+1);
+		}
+		cell1 = head.insertCell(0);
+		cell1.innerHTML = "VHDL";
 }
-
-function imprimeMatriz(matriz_arg,destino)
-{
-  iteracoes++;
-  document.getElementById(destino).innerHTML += "A matriz ficará assim na "+iteracoes+"ª iteração: <br /><table id ='ite"+iteracoes+"'> </table>";
-  var table = document.getElementById("ite"+iteracoes);
-  for(b=0;b<maqqtd;b++)
-  {
-    var row = table.insertRow(b);
-    row.innerHTML = "Máquina " + (b+1);
-    for(c=0;c<prodqtd;c++)
-    {		var cell = row.insertCell(c);
-        cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'">';
-        if(matriz_arg[c][b]==1)
-          $('#p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'').prop('checked', true);
-    }
-  }
-  var head = table.insertRow(0);
-    for(c=0;c<prodqtd;c++)
-  {
-    var cell1 = head.insertCell(c);
-    cell1.innerHTML = "P"+(c+1);
-  }
-  cell1 = head.insertCell(0);
-  cell1.innerHTML = "VHDL";
-
-}
-function roc()
-{
-    imprimeMatriz(matriz_aux, "roc");
-    var matriz_aux = new Array([],[]);
-    copiarMatrizes(matriz, matriz_aux, prodqtd,maqqtd);
-    somarLinhas(matriz_aux, prodqtd, maqqtd);
-    ordenaMatrizLinhas(matriz_aux, prodqtd, maqqtd);
-    somarColunas(matriz_aux, prodqtd, maqqtd);
-    ordenaMatrizColunas(matriz_aux, prodqtd, maqqtd);
-
-    if(!compararMatrizes(matriz, matriz_aux, i,j)) // Se tem que fazer mais iteracoes
-    {
-        copiarMatrizes(matriz_aux,matriz, prodqtd, maqqtd);
-        roc();
-    }
-}
-function compararMatrizes(matriz1, matriz2, i,j)
-{
-    var b,c;
-    for(b=0;b<i;jb++)
-        for(c=o;c<j;c++)
-            if(matriz1[b][c]!==matriz2[b][c])
-                return 0;
-    return 1;
-}
-
-function somarLinhas(matriz_arg, i, j)
-{
-    var a,b;
-    for(b=0;b<j;b++)
-      for(a=0;a<i;a++)
-      {
-        matriz_arg[i+1][b] += matriz_arg[a][b];
-      }
-}
-
-function somarColunas(matriz_arg, i, j)
-{
-  var a,b;
-  for(b=0;b<i;b++)
-    for(a=0;a<j;a++)
-    {
-      matriz_arg[b][j+1] += matriz_arg[b][a];
-    }
-}
-
-var aux = new Array();
-for(c=0; c<linha+2; c++)
-  aux[c]= m[l][c];
-  m[l][c] = m[d][c];
-  m[d][c] = aux[c];
-/*
-// Dada uma matriz de I produtos e J máquinas, onde no slot i,j temos o número do produto/máquina
-// e no slot i+1, j+1 temos os slots destinado para as somas
-
-
-
-
-function copiarMatrizes(matriz1, matriz2, i,j)
-{
-
-}
-
-function ordenaMatrizLinha(matriz_arg, i, j)
-{
-    // Usar como referencia a função ordenar
-    // trocar a linha inteira
-}
-
-function ordenaMatrizColuna(matriz_arg, i, j)
-{
-  //idem acima
-}
-
-function ordenar(vetor,i,j)
-{
-    var min,c, aux;
-    if(i<j)
-    {
-        min = i;
-        for(c=i+1; c<j;c++)
-            if(vetor[i]<vetor[min])
-                min = i;
-        aux = vetor[i]; // A troca aqui seria a linha toda e não só um elemento
-        vetor[i] = vetor[min]; //idem, forzinho
-        vetor[min] = i; //idem
-        ordenaVetor(vetor, ++i,j);
-    }
-}
-*/
