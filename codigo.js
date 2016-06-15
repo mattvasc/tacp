@@ -1,86 +1,30 @@
 var matriz;
+var matrizb;
 var iteracoes;
 var prodqtd;
 var maqqtd;
-function isInt(value) {
-  return !isNaN(value) &&
-         parseInt(Number(value)) == value &&
-         !isNaN(parseInt(value, 10));
-}
-function limpaTabela()
+function roc()
 {
-	var table = document.getElementById("tblin");
-		table.innerHTML = "";
+    var matriz_aux;
+
+  //
+    matriz = somarLinhas(matriz);
+  //  matriz = somarColunas(matriz_aux);
+    matriz_aux = copiarMatrizes(matriz, matriz_aux);
+    matriz_aux = ordenaMatrizLinhas(matriz_aux);
+  //  matriz_aux =  ordenaMatrizColunas(matriz_aux);
+
+    if(!compararMatrizes(matriz, matriz_aux)) // Se tem que fazer mais iteracoes
+    {
+        matriz = copiarMatrizes(matriz_aux,matriz); // origem, destino
+        imprimeMatriz(matriz_aux, "roc");
+        roc();
+    }
+
 }
-function criaTabela(prodqtd,maqqtd)
+function cna()
 {
-
-		var b,c;
-		var table = document.getElementById("tblin");
-		table.innerHTML = "";
-		for(b=0;b<maqqtd;b++)
-		{
-			var row = table.insertRow(b);
-			row.innerHTML = "Máquina " + (b+1);
-			for(c=0;c<prodqtd;c++)
-			{		var cell = row.insertCell(c);
-					cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'">';
-
-			}
-		}
-		var head = table.insertRow(0);
-			for(c=0;c<prodqtd;c++)
-		{
-			var cell1 = head.insertCell(c);
-			cell1.innerHTML = "P"+(c+1);
-		}
-		cell1 = head.insertCell(0);
-		cell1.innerHTML = "VHDL";
-}
-
-function Magica()
-{
-	// Tentando pegar entradas
-    prodqtd = document.getElementById("prodtxt").value;
-    maqqtd = document.getElementById("maqtxt").value;
-	// Verificando se as entradas são válidas
-	if(!isInt(prodqtd) || !isInt(maqqtd)){
-		alert("Insira apenas entradas válidas (numérica).");
-		document.getElementById("prodtxt").value = "";
-		document.getElementById("maqtxt").value = "";
-		document.getElementById("prodtxt").focus();
-		return;
-	}
-	if(prodqtd<=0 || maqqtd<=0)
-	{
-		alert("Insira apenas números válidos (maior do que 0).");
-		document.getElementById("prodtxt").value = "";
-		document.getElementById("maqtxt").value = "";
-		document.getElementById("prodtxt").focus();
-		return;
-	}
-	else if(prodqtd>=45 || maqqtd>=45)
-	{
-		alert("Por limitações computacionais, entre com uma matriz de até 45x45");
-		document.getElementById("prodtxt").value = "";
-		document.getElementById("maqtxt").value = "";
-		document.getElementById("prodtxt").focus();
-		return;
-	}
-	document.getElementById("entradas").style.display = "none"; // OCULTA INPUT FIELDS
- 	document.getElementById("bnt2").style.display = "inline"; // E MOSTRA BT2
-  document.getElementById("bnt3").style.display = "inline";
-	criaTabela(prodqtd,maqqtd);
-}
-
-function Magica2()
-{
-//	 alert("Chama funcao calcular do codigo.js");
-   lerMatriz();
-   document.getElementById("resultado").style.display = "inline";
-   iteracoes = 0;
-   roc();
-
+  gerarMatrizcna();
 }
 
 function lerMatriz() // FULL OK
@@ -116,18 +60,43 @@ function lerMatriz() // FULL OK
 
 function gerarMatrizcna()
 {
+  matrizb = [];
+  var a,b,c;
+  for(a=0;a<maqqtd;a++){ // Criando a matriz em O(maq²);
+      matrizb[a] = [];
+      for(b=0;b<maqqtd;b++)
+          matrizb[a][b] = a===b ? NaN : 0; // Linha de ouro, usei um operador ternário
+  }
+  matrizb[++a] = []; // Criando slot forçado para salvar o resultado das somas.
+  // A PARTIR DAQUI TA ERRADO
+  for(a=0;a<prodqtd;a++){ // Para cada produto, faca:
+    for(b=0;b<+maqqtd-1;b++) // Escolha um pivo, de 0 até maq-1
+    {
+      if(matriz[a][b]==0) // Se o pivo for zero
+        continue; // Avance o Pivo
+      for(c=b+1;c<maqqtd;c++) // para todas as Maquinas apos o pivo
+      {
 
+        if(matriz[a][b]==matriz[a][c] && matriz[a][b] == 1)
+        {
+          matrizb[b][c] += 1;
+          matrizb[c][b] += 1;
+        }
+      }
+    }
+  }
+  // ATÉ AQUI TA ERRADO
 }
 
 function imprimeMatriz(matriz_arg,destino)
 {
   iteracoes++;
-  document.getElementById(destino).innerHTML += "A matriz ficará assim na "+iteracoes+"ª iteração: <br /><table id ='ite"+iteracoes+"'> </table>";
+  document.getElementById(destino).innerHTML += "A matriz via "+destino+" ficará assim na "+iteracoes+"ª iteração: <br /><table border='1' id ='ite"+iteracoes+"'> </table>";
   var table = document.getElementById("ite"+iteracoes);
   for(b=0;b<maqqtd;b++)
   {
     var row = table.insertRow(b);
-    row.innerHTML = "Máquina " + (b+1);
+    row.innerHTML = "Máquina " + (matriz_arg[prodqtd][b]+1);
     for(c=0;c<prodqtd;c++)
     {		var cell = row.insertCell(c);
         cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'i'+iteracoes+'">';
@@ -139,34 +108,22 @@ function imprimeMatriz(matriz_arg,destino)
     for(c=0;c<prodqtd;c++)
   {
     var cell1 = head.insertCell(c);
-    cell1.innerHTML = "P"+(c+1);
+    cell1.innerHTML = "P"+(matriz_arg[c][maqqtd]+1);
   }
   cell1 = head.insertCell(0);
   cell1.innerHTML = "VHDL";
 
 }
-function roc()
-{
-    var matriz_aux;
-    matriz_aux = copiarMatrizes(matriz, matriz_aux);
-  //  imprimeMatriz(matriz_aux, "roc");
-    matriz_aux = somarLinhas(matriz_aux);
-    matriz_aux = ordenaMatrizLinhas(matriz_aux);
-  /*  somarColunas(matriz_aux);
-    ordenaMatrizColunas(matriz_aux);
-    if(!compararMatrizes(matriz, matriz_aux, i,j)) // Se tem que fazer mais iteracoes
-    {
-        copiarMatrizes(matriz_aux,matriz); // origem, destino
-        roc();
-    }*/
-}
+
 function compararMatrizes(matriz1, matriz2)
 {
-    var b,c;
-    for(b=0;b<prodqtd;jb++)
-        for(c=o;c<maqqtd;c++)
-            if(matriz1[b][c]!==matriz2[b][c])
+    var b;
+    for(b=0;b<prodqtd;b++) // Só olha os IDS
+      if(matriz1[b][maqqtd]!=matriz2[b][maqqtd])
                 return 0;
+    for(b=0;b<maqqtd;b++) // Só olha os IDS
+      if(matriz1[prodqtd][b]!==matriz2[prodqtd][b])
+        return 0;
     return 1;
 }
 
@@ -205,12 +162,6 @@ function somarColunas(matriz_arg)
 		}
 	}
 }
-
-// Dada uma matriz de I produtos e J máquinas, onde no slot i,j temos o número do produto/máquina
-// e no slot i+1, j+1 temos os slots destinado para as somas
-
-
-
 
 function copiarMatrizes(matriz1, matriz2) // ORIGEM, DESTINO
 {
@@ -314,3 +265,85 @@ function ordenaMatrizColuna(matriz_arg)
 		}
 	}
 }*/
+
+function isInt(value) {
+  return !isNaN(value) &&
+         parseInt(Number(value)) == value &&
+         !isNaN(parseInt(value, 10));
+}
+function limpaTabela()
+{
+	var table = document.getElementById("tblin");
+		table.innerHTML = "";
+}
+function Magica()
+{
+	// Tentando pegar entradas
+    prodqtd = document.getElementById("prodtxt").value;
+    maqqtd = document.getElementById("maqtxt").value;
+	// Verificando se as entradas são válidas
+	if(!isInt(prodqtd) || !isInt(maqqtd)){
+		alert("Insira apenas entradas válidas (numérica).");
+		document.getElementById("prodtxt").value = "";
+		document.getElementById("maqtxt").value = "";
+		document.getElementById("prodtxt").focus();
+		return;
+	}
+	if(prodqtd<=0 || maqqtd<=0)
+	{
+		alert("Insira apenas números válidos (maior do que 0).");
+		document.getElementById("prodtxt").value = "";
+		document.getElementById("maqtxt").value = "";
+		document.getElementById("prodtxt").focus();
+		return;
+	}
+	else if(prodqtd>=45 || maqqtd>=45)
+	{
+		alert("Por limitações computacionais, entre com uma matriz de até 45x45");
+		document.getElementById("prodtxt").value = "";
+		document.getElementById("maqtxt").value = "";
+		document.getElementById("prodtxt").focus();
+		return;
+	}
+	document.getElementById("entradas").style.display = "none"; // OCULTA INPUT FIELDS
+ 	document.getElementById("bnt2").style.display = "inline"; // E MOSTRA BT2
+  document.getElementById("bnt3").style.display = "inline";
+	criaTabela(prodqtd,maqqtd);
+}
+
+function Magica2()
+{
+//	 alert("Chama funcao calcular do codigo.js");
+   lerMatriz();
+   document.getElementById("resultado").style.display = "inline";
+   iteracoes = 0;
+   roc();
+   cna();
+}
+
+function criaTabela(prodqtd,maqqtd)
+{
+
+		var b,c;
+		var table = document.getElementById("tblin");
+		table.innerHTML = "";
+		for(b=0;b<maqqtd;b++)
+		{
+			var row = table.insertRow(b);
+			row.innerHTML = "Máquina " + (b+1);
+			for(c=0;c<prodqtd;c++)
+			{		var cell = row.insertCell(c);
+					cell.onclick = $( "#p"+(c+1) +"m"+(b+1) ).prop( "checked", true );
+					cell.innerHTML = '<input type="checkbox" id="p'+(c+1) +'m'+(b+1)+'">';
+
+			}
+		}
+		var head = table.insertRow(0);
+			for(c=0;c<prodqtd;c++)
+		{
+			var cell1 = head.insertCell(c);
+			cell1.innerHTML = "P"+(c+1);
+		}
+		cell1 = head.insertCell(0);
+		cell1.innerHTML = "VHDL";
+}
