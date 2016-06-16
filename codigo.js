@@ -7,13 +7,21 @@ function roc()
 {
     var matriz_aux;
 
-  //
     matriz = somarLinhas(matriz);
-  //  matriz = somarColunas(matriz_aux);
-    matriz_aux = copiarMatrizes(matriz, matriz_aux);
-    matriz_aux = ordenaMatrizLinhas(matriz_aux);
-  //  matriz_aux =  ordenaMatrizColunas(matriz_aux);
-
+	matriz_aux = copiarMatrizes(matriz, matriz_aux);
+	matriz_aux = ordenaMatrizLinhas(matriz_aux);
+	
+	if(!compararMatrizes(matriz, matriz_aux)) // Se tem que fazer mais iteracoes
+    {
+        matriz = copiarMatrizes(matriz_aux,matriz); // origem, destino
+        imprimeMatriz(matriz_aux, "roc");
+		return matriz_aux;
+	}
+	
+    matriz = somarColunas(matriz_aux);
+	matriz_aux = copiarMatrizes(matriz, matriz_aux);
+	matriz_aux =  ordenaMatrizColunas(matriz_aux);
+	
     if(!compararMatrizes(matriz, matriz_aux)) // Se tem que fazer mais iteracoes
     {
         matriz = copiarMatrizes(matriz_aux,matriz); // origem, destino
@@ -22,11 +30,11 @@ function roc()
     }
 
 }
-function cna()
+/*function cna()
 {
   gerarMatrizcna();
 }
-
+*/
 function lerMatriz() // FULL OK
 {
     var a,b;
@@ -61,32 +69,43 @@ function lerMatriz() // FULL OK
 function gerarMatrizcna()
 {
   matrizb = [];
-  var a,b,c;
+  var a,b,c,cont;
   for(a=0;a<maqqtd;a++){ // Criando a matriz em O(maq²);
       matrizb[a] = [];
       for(b=0;b<maqqtd;b++)
           matrizb[a][b] = a===b ? NaN : 0; // Linha de ouro, usei um operador ternário
   }
   matrizb[++a] = []; // Criando slot forçado para salvar o resultado das somas.
-  // A PARTIR DAQUI TA ERRADO
-  for(a=0;a<prodqtd;a++){ // Para cada produto, faca:
-    for(b=0;b<+maqqtd-1;b++) // Escolha um pivo, de 0 até maq-1
-    {
-      if(matriz[a][b]==0) // Se o pivo for zero
-        continue; // Avance o Pivo
-      for(c=b+1;c<maqqtd;c++) // para todas as Maquinas apos o pivo
-      {
-
-        if(matriz[a][b]==matriz[a][c] && matriz[a][b] == 1)
-        {
-          matrizb[b][c] += 1;
-          matrizb[c][b] += 1;
-        }
-      }
-    }
-  }
-  // ATÉ AQUI TA ERRADO
+  for(a=0; a<maqqtd; a++){
+		for(b=0; b<maqqtd; b++){
+			if(a!=b){
+				cont = 0;
+				for(c=0; c<prodqtd; c++){
+					if(matriz[a][c] == 1 && matriz[b][c] == 1){
+						cont++;
+					}
+				}
+				matrizb[a][b]=cont;
+				matrizb[a][maqqtd] = matrizb[a][maqqtd] + cont;
+			}
+			else{
+				matrizb[b][a]='-';
+			}
+		}
+	}
 }
+
+/*  --PARA A PRIMEIRA LINHA A SER ORDENADA:
+	PARA A MAIOR SOMA[i], DESLOCAR LINHA i INTEIRA PARA i = 0 (ou seja, para a primeira linha)... 
+	se tiver duas somas de valor igual, deslocar a que tiver menor indice i
+	
+	--PARA AS DEMAIS LINHAS A SEREM ORDENADAS:
+	IDENTIFICA MAIOR VALOR DA LINHA i (recém deslocada), PARA O MAIOR VALOR, PEGAR SEU INDICE DE COLUNA j 
+	E TRABALHAR NA LINHA DESSE INDICE... se por acaso, houver mais de uma linha a ser escolhida, 
+	escolher a de maior soma. Se as somas forem iguais, escolher a que possui menor indice i
+	
+	--DEPOIS DISSO TEM AS DIVISÕES DE MATRIZ QUE DAI É OUTRO DEMONHO*/
+
 
 function imprimeMatriz(matriz_arg,destino)
 {
@@ -111,7 +130,7 @@ function imprimeMatriz(matriz_arg,destino)
     cell1.innerHTML = "P"+(matriz_arg[c][maqqtd]+1);
   }
   cell1 = head.insertCell(0);
-  cell1.innerHTML = "VHDL";
+  cell1.innerHTML = "ACP";
 
 }
 
@@ -131,7 +150,7 @@ function somarLinhas(matriz_arg)
 {
 	var a,b,c;
   // Zerando os valores da soma anterior
-	for(a=0; a<+prodqtd; a++){
+	for(a=0; a<prodqtd; a++){
 		matriz_arg[a][+maqqtd+1] = 0;
 	}
   // Calculando a soma
@@ -147,17 +166,17 @@ function somarLinhas(matriz_arg)
 
 function somarColunas(matriz_arg)
 {
-  var a,b;
+  var a,b,c;
   //Zerando o valor das somas anteriores
   for(a=0; a<maqqtd; a++){
 		matriz_arg[+prodqtd+1][a] = 0;
 	}
 
   //Calculando a soma
-	for(b=0; b<maqqtd; b--){
+	for(a=0; a<prodqtd; a++){
 	c=1;
-		for(a=+prodqtd-1; a>=0; a--){
-			matriz_arg[+prodqtd+1][b] += ((matriz_arg[a][b])*c);
+		for(b=(+maqqtd-1); b>=0; b--){
+			matriz_arg[a][+maqqtd+1] += ((matriz_arg[b][a])*c);
 			c *= 2;
 		}
 	}
@@ -184,7 +203,7 @@ function ordenaMatrizLinhas(matriz_arg)
 
 function ordenaMatrizColunas(matriz_arg)
 {
-  matriz_arg = ordenaLinhaRecursiva(matriz_arg, 0);
+  matriz_arg = ordenaColunaRecursiva(matriz_arg, 0);
   return matriz_arg;
 }
 
@@ -214,7 +233,7 @@ function ordenaLinhaRecursiva(matriz_arg, indice)
   }
     return matriz_arg;
 }
-/*
+
 function ordenaColunaRecursiva(matriz_arg, indice)
 {
   if(indice<(+prodqtd-1))
@@ -223,48 +242,23 @@ function ordenaColunaRecursiva(matriz_arg, indice)
     max = indice;
     for(a=(+indice+1); a<prodqtd;a++)
     {
-      if( matriz_arg[+prodqtd+1][a] > matriz_arg[+prodqtd+1][max])
+      if( matriz_arg[a][+maqqtd+1] > matriz_arg[max][+maqqtd+1])
         max = a;
     }
     if(max!==indice)
     {
-      for(a=0;a<+prodqtd+2;a++)
+      for(a=0;a<+maqqtd+2;a++)
       {
-        aux1 = matriz_arg[a][max];
-        aux2 =  matriz_arg[a][indice]; // Só criei isso pq sou noob em javascript
-        matriz_arg[a][max] = aux2;
-        matriz_arg[a][indice] = aux1;
+        aux1 = matriz_arg[max][a];
+        aux2 =  matriz_arg[indice][a]; // Só criei isso pq sou noob em javascript
+        matriz_arg[max][a] = aux2;
+        matriz_arg[indice][a] = aux1;
       }
     }
-    matriz_arg = ordenaLinhaRecursiva(matriz_arg, ++indice);
+    matriz_arg = ordenaColunaRecursiva(matriz_arg, ++indice);
   }
     return matriz_arg;
-}*/
-
-
-/*
-
-Historia@123@4@APROVADO@10@100
-pao
-
-*/
-/*
-function ordenaMatrizColuna(matriz_arg)
-{
-  	var a, b, c, aux;
-
-  	for(a=0; a<maqqtd; a++){
-		for(b=+a+1; b<+maqqtd-1; b++){
-			if(matriz_arg[+prodqtd+1][i] < matriz_arg[+prodqtd+1][j]){
-				for(c=0; c<=+prodqtd+1; c++){
-					aux=matriz_arg[c][b];
-					matriz_arg[c][b]=matriz_arg[c][a];
-					matriz_arg[c][a]=aux;
-				}
-			}
-		}
-	}
-}*/
+}
 
 function isInt(value) {
   return !isNaN(value) &&
@@ -318,7 +312,7 @@ function Magica2()
    document.getElementById("resultado").style.display = "inline";
    iteracoes = 0;
    roc();
-   cna();
+   //cna();
 }
 
 function criaTabela(prodqtd,maqqtd)
@@ -345,5 +339,5 @@ function criaTabela(prodqtd,maqqtd)
 			cell1.innerHTML = "P"+(c+1);
 		}
 		cell1 = head.insertCell(0);
-		cell1.innerHTML = "VHDL";
+		cell1.innerHTML = "ACP";
 }
