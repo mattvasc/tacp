@@ -1,0 +1,82 @@
+<html>
+<head>
+    <link rel="stylesheet" href="./css/style.css" type="text/css"/>
+    <link rel="icon" href="./img/icon.ico">
+    <script type="text/javascript" src="./src/jquery-1.12.4.min.js"></script>
+	<script src="./src/jAlert-v4.js"></script>
+	<script src="./src/jAlert-functions.js"></script>
+	<link rel="stylesheet" href="./css/notify.css">
+	<link rel="stylesheet" href="./css/prettify.css">
+	<script type="text/javascript" src="./src/notify.js"></script>
+	<script type="text/javascript" src="./src/prettify.js"></script>
+	<link rel="stylesheet" href="./css/jAlert-v4.css" />
+    <script type="text/javascript" src="./codigo.js" charset="UTF-8"></script>
+    <title>Cálculo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body id="bódi">
+	<font face="Verdana"> <center>
+    <div id="inputdiv">
+       <!-- <fieldset id="entradas" >
+            <legend>Informações:</legend>-->
+			<div id="entradas">
+				<label> Número de Produtos:
+				<input type="text" name="prodtxt" id="prodtxt">
+				</label><br /> <br />
+				<label> Número de Máquinas:
+				<input type="text" name="maqtxt" id="maqtxt">
+				</label> <br /> <br />
+				<input type="button" id="btn4" value="Voltar" onclick="window.location.assign('../index.html');">
+				<input type="button" id="btn1" value="Próximo" onclick="Magica()">
+     <!--   </fieldset>--></div>
+  </div></center>
+	<center>
+    <div id="mtzdiv"><br />
+    <label id="oh">  Preencha a matriz:</label>
+        <br />
+        <table id="tblin" border="1">
+        </table> <br />
+        <input type="button" id="bnt3" value="Voltar" style="display:none" onclick="location.reload(); ">
+        <input type="button" id="bnt2" value="Calcular" style="display:none" onclick="Magica2()"><br /> <p></p>
+    </div></center>
+	<br /><br /><br />
+    <section id="resultado" style="display:none">
+	<div id="right">
+	<center>
+        <div id="CNA">
+			
+        </div>
+	</center>
+	</div>
+	<div id="left">
+	<center>
+        <div id="ROC">
+
+        </div>
+	</center>
+	</script>
+	</div>
+    </section>
+	</font>
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+	document.getElementById("prodtxt").focus();
+});
+document.getElementById("prodtxt")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById("maqtxt").focus();
+    }
+});
+
+document.getElementById("maqtxt")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById("btn1").click();
+    }
+});
+</script>
+</html>
