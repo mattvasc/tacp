@@ -1,0 +1,158 @@
+
+#btn1 {
+    border: none;
+    color: black;
+    padding: 3px 7px;
+	border-radius: 10px;
+    color: black;
+    border: 2px solid #555555;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+	-webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+#btn1:hover {
+    background-color: #555555;
+    color: white;
+}
+
+
+#btn4 {
+    border: none;
+    color: black;
+    padding: 3px 7px;
+	border-radius: 10px;
+    color: black;
+    border: 2px solid #555555;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+	-webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+#btn4:hover {
+    background-color: #555555;
+    color: white;
+}
+
+#bnt2 {
+    border: none;
+    color: black;
+    padding: 3px 7px;
+	border-radius: 10px;
+    color: black;
+    border: 2px solid #555555;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+	-webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+#bnt2:hover {
+    background-color: #555555;
+    color: white;
+}
+
+#bnt3 {
+    border: none;
+    color: black;
+    padding: 3px 7px;
+	border-radius: 10px;
+    color: black;
+    border: 2px solid #555555;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+	--webkit-transition-duration: 0.4s; /* Safari */
+    -transition-duration: 0.4s;
+}
+
+#bnt3:hover {
+    background-color: #555555;
+    color: white;
+}
+
+#inputdiv{
+	 background-color: #009999;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border-radius:10px;
+	max-width:90%;
+	margin-top:30px;
+	overflow: auto;
+	position: relative;
+}
+
+#entradas{
+	margin-top:15px;
+	margin-bottom:15px;
+    overflow:hidden;
+	width:auto;
+	position: relative;
+}
+input[type=button]
+{
+  cursor: pointer;
+}
+
+#bódi{
+    background-color: #66CCCC;
+}
+
+#resultado {
+
+}
+table#tblin
+{
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 7px;
+  text-align: center;
+}
+
+#roc {
+  --width: auto;
+  margin-top: auto;
+    --padding-left: 10%;
+}
+
+#cna{
+
+  margin-top: auto;
+ --width: auto;
+}
+
+#left, #right {
+    display: inline-block;
+    width: 45%;
+    height: 100%;
+	overflow: auto;
+} 
+
+#left  { float: left;  }
+#right { float:right; }
+
+
+#mtzdiv{
+  display: none;
+  width: auto;
+  background-color: 009999;
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+  border-radius:10px;
+}
+
+
+input[type=checkbox]
+{
+    cursor: pointer;
+}
+
