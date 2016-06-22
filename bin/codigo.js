@@ -1,4 +1,5 @@
 var matriz;
+var matrizcna;
 var matrizb;
 var iteracoes;
 var prodqtd;
@@ -9,9 +10,9 @@ function roc()
 
     	matriz_aux = copiarMatrizes(matriz, matriz_aux);
     	matriz_aux = somarLinhas(matriz_aux);
-		matriz_aux = ordenaMatrizLinhas(matriz_aux);
+		  matriz_aux = ordenaMatrizLinhas(matriz_aux);
     	matriz_aux = somarColunas(matriz_aux);
-		matriz_aux =  ordenaMatrizColunas(matriz_aux);
+      matriz_aux =  ordenaMatrizColunas(matriz_aux);
 
     if(!compararMatrizes(matriz, matriz_aux)) // Se tem que fazer mais iteracoes
     {
@@ -20,11 +21,11 @@ function roc()
     }
 
 }
-/*function cna()
+function cna()
 {
   gerarMatrizcna();
 }
-*/
+
 function lerMatriz() // FULL OK
 {
     var a,b;
@@ -62,46 +63,40 @@ function gerarMatrizcna()
   var a,b,c,cont;
   for(a=0;a<maqqtd;a++){ // Criando a matriz em O(maq²);
       matrizb[a] = [];
-      for(b=0;b<maqqtd;b++)
-          matrizb[a][b] = a===b ? NaN : 0; // Linha de ouro, usei um operador ternário
+      for(b=0;b<maqqtd;b++){
+          matrizb[a][b] = a===b ? '-' : 0; // Linha de ouro, usei um operador ternário
+          }
   }
-  matrizb[++a] = []; // Criando slot forçado para salvar o resultado das somas.
-  for(a=0; a<maqqtd; a++){
-		for(b=0; b<maqqtd; b++){
-			if(a!=b){
-				cont = 0;
-				for(c=0; c<prodqtd; c++){
-					if(matriz[a][c] == 1 && matriz[b][c] == 1){
-						cont++;
-					}
-				}
-				matrizb[a][b]=cont;
-				matrizb[a][maqqtd] = matrizb[a][maqqtd] + cont;
-			}
-			else{
-				matrizb[b][a]='-';
-			}
-		}
-	}
+  matrizb[maqqtd]=[];
+
+    matrizb[maqqtd] = []; // Criando slot forçado para salvar o resultado das somas.
+    for(a=0;a<maqqtd;a++)
+    matrizb[maqqtd][a]=0;
+
+    for(a=0; a<(+maqqtd-1); a++){
+  		for(b=(+a+1); b<maqqtd; b++){
+  		    cont = 0;
+  				for(c=0; c<prodqtd; c++){
+            if(matrizcna[c][a]==0)
+              continue;
+  					if(matrizcna[c][b] == 1){
+  						cont++;
+  					}
+  				}
+  				matrizb[a][b]=cont; matrizb[b][a] = cont;
+  		}
+  	}
+    for(a=0;a<maqqtd;a++)
+      for(b=0;b<maqqtd;b++)
+        if(matrizb[a][b]!=='-')
+          matrizb[maqqtd][a] = (matrizb[maqqtd][a]==null) ? matrizb[a][b] : (+matrizb[maqqtd][a]+matrizb[a][b]);
 }
-
-/*  --PARA A PRIMEIRA LINHA A SER ORDENADA:
-	PARA A MAIOR SOMA[i], DESLOCAR LINHA i INTEIRA PARA i = 0 (ou seja, para a primeira linha)...
-	se tiver duas somas de valor igual, deslocar a que tiver menor indice i
-
-	--PARA AS DEMAIS LINHAS A SEREM ORDENADAS:
-	IDENTIFICA MAIOR VALOR DA LINHA i (recém deslocada), PARA O MAIOR VALOR, PEGAR SEU INDICE DE COLUNA j
-	E TRABALHAR NA LINHA DESSE INDICE... se por acaso, houver mais de uma linha a ser escolhida,
-	escolher a de maior soma. Se as somas forem iguais, escolher a que possui menor indice i
-
-	--DEPOIS DISSO TEM AS DIVISÕES DE MATRIZ QUE DAI É OUTRO DEMONHO*/
-
 
 function imprimeMatriz(matriz_arg,destino)
 {
   iteracoes++;
-  document.getElementById(destino).innerHTML += "A matriz via "+destino+" ficará assim: <br /><table border='1' id ='ite"+iteracoes+"'> </table>";
-  var table = document.getElementById("ite"+iteracoes);
+  document.getElementById(destino).innerHTML += "A matriz via "+destino+" ficará assim: <br /><table border='1' id ='t"+destino+"'> </table>";
+  var table = document.getElementById("t"+destino);
   for(b=0;b<maqqtd;b++)
   {
     var row = table.insertRow(b);
@@ -176,9 +171,9 @@ function somarColunas(matriz_arg)
 function copiarMatrizes(matriz1, matriz2) // ORIGEM, DESTINO
 {
 	var a,b;
-  matriz2 = []; // Faltou essa linha
+  matriz2 = [];
 	for(a=0; a<(+prodqtd+2); a++){
-    matriz2[a] = []; // E essa também
+    matriz2[a] = [];
 		for(b=0; b<(+maqqtd+2); b++){
 			matriz2[a][b] = matriz1[a][b];
 		}
@@ -304,9 +299,10 @@ function Magica2()
    document.getElementById("resultado").style.display = "inline";
    document.getElementById("bnt2").style.display = "none";
    iteracoes = 0;
+   matrizcna = copiarMatrizes(matriz, matrizcna);
    roc();
 	imprimeMatriz(matriz, "ROC");
-	//cna();
+	cna();
 	imprimeMatriz(matriz, "CNA");
 }
 
