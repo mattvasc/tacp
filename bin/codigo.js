@@ -1,18 +1,20 @@
 var matriz;
-var matrizcna;
 var matrizb;
 var iteracoes;
 var prodqtd;
 var maqqtd;
+var cellqtdCNA;
+var cellqtdROC;
+var total=0;
 function roc()
 {
     var matriz_aux;
 
     	matriz_aux = copiarMatrizes(matriz, matriz_aux);
     	matriz_aux = somarLinhas(matriz_aux);
-		  matriz_aux = ordenaMatrizLinhas(matriz_aux);
+		matriz_aux = ordenaMatrizLinhas(matriz_aux);
     	matriz_aux = somarColunas(matriz_aux);
-      matriz_aux =  ordenaMatrizColunas(matriz_aux);
+		matriz_aux =  ordenaMatrizColunas(matriz_aux);
 
     if(!compararMatrizes(matriz, matriz_aux)) // Se tem que fazer mais iteracoes
     {
@@ -39,8 +41,10 @@ function lerMatriz() // FULL OK
             matriz[b][a] = 0;
           }
           else
-            if ($("#p"+(b+1)+"m"+(a+1)).is(":checked"))
+            if ($("#p"+(b+1)+"m"+(a+1)).is(":checked")){
                 matriz[b][a] = 1;
+				total++;
+			}
             else
                 matriz[b][a] = 0;
         }
@@ -57,45 +61,10 @@ function lerMatriz() // FULL OK
     matriz[(+prodqtd+1)][a] = 0;matriz[(+prodqtd+1)][+a+1] = 0;
 }
 
-function gerarMatrizcna()
-{
-  matrizb = [];
-  var a,b,c,cont;
-  for(a=0;a<maqqtd;a++){ // Criando a matriz em O(maq²);
-      matrizb[a] = [];
-      for(b=0;b<maqqtd;b++){
-          matrizb[a][b] = a===b ? '-' : 0; // Linha de ouro, usei um operador ternário
-          }
-  }
-  matrizb[maqqtd]=[];
-
-    matrizb[maqqtd] = []; // Criando slot forçado para salvar o resultado das somas.
-    for(a=0;a<maqqtd;a++)
-    matrizb[maqqtd][a]=0;
-
-    for(a=0; a<(+maqqtd-1); a++){
-  		for(b=(+a+1); b<maqqtd; b++){
-  		    cont = 0;
-  				for(c=0; c<prodqtd; c++){
-            if(matrizcna[c][a]==0)
-              continue;
-  					if(matrizcna[c][b] == 1){
-  						cont++;
-  					}
-  				}
-  				matrizb[a][b]=cont; matrizb[b][a] = cont;
-  		}
-  	}
-    for(a=0;a<maqqtd;a++)
-      for(b=0;b<maqqtd;b++)
-        if(matrizb[a][b]!=='-')
-          matrizb[maqqtd][a] = (matrizb[maqqtd][a]==null) ? matrizb[a][b] : (+matrizb[maqqtd][a]+matrizb[a][b]);
-}
-
 function imprimeMatriz(matriz_arg,destino)
 {
   iteracoes++;
-  document.getElementById(destino).innerHTML += "A matriz via "+destino+" ficará assim: <br /><table border='1' id ='t"+destino+"'> </table>";
+  document.getElementById(destino).innerHTML += "Matriz resultado de "+destino+": <br /><table bgcolor='#009999' style='border-radius: 10px; text-align: center; margin-top: 1em;' border='1' id ='t"+destino+"'> </table>";
   var table = document.getElementById("t"+destino);
   for(b=0;b<maqqtd;b++)
   {
@@ -112,10 +81,10 @@ function imprimeMatriz(matriz_arg,destino)
     for(c=0;c<prodqtd;c++)
   {
     var cell1 = head.insertCell(c);
-    cell1.innerHTML = (matriz_arg[c][maqqtd]+1);
+    cell1.innerHTML = "P" + (matriz_arg[c][maqqtd]+1);
   }
   cell1 = head.insertCell(0);
-  cell1.innerHTML = "Prod";
+  cell1.innerHTML = destino;
 
 }
 
@@ -171,9 +140,9 @@ function somarColunas(matriz_arg)
 function copiarMatrizes(matriz1, matriz2) // ORIGEM, DESTINO
 {
 	var a,b;
-  matriz2 = [];
+  matriz2 = []; // Faltou essa linha
 	for(a=0; a<(+prodqtd+2); a++){
-    matriz2[a] = [];
+    matriz2[a] = []; // E essa também
 		for(b=0; b<(+maqqtd+2); b++){
 			matriz2[a][b] = matriz1[a][b];
 		}
@@ -271,7 +240,7 @@ function Magica()
 	}
 	if(prodqtd<=0 || maqqtd<=0)
 	{
-		alert("Insira apenas números estritamente positivos!.");
+		alert("Insira apenas números estritamente positivos.");
 		document.getElementById("prodtxt").value = "";
 		document.getElementById("maqtxt").value = "";
 		document.getElementById("prodtxt").focus();
@@ -299,12 +268,12 @@ function Magica2()
    document.getElementById("resultado").style.display = "inline";
    document.getElementById("bnt2").style.display = "none";
    iteracoes = 0;
-   matrizcna = copiarMatrizes(matriz, matrizcna);
    roc();
 	imprimeMatriz(matriz, "ROC");
-	cna();
+	//cna();
 	imprimeMatriz(matriz, "CNA");
 }
+
 
 function criaTabela(prodqtd,maqqtd)
 {
@@ -315,7 +284,7 @@ function criaTabela(prodqtd,maqqtd)
 		for(b=0;b<maqqtd;b++)
 		{
 			var row = table.insertRow(b);
-			row.innerHTML = "Máquina " + (b+1);
+			row.innerHTML = "Máq " + (b+1);
 			for(c=0;c<prodqtd;c++)
 			{		var cell = row.insertCell(c);
 					cell.onclick = $( "#p"+(c+1) +"m"+(b+1) ).prop( "checked", true );
@@ -331,4 +300,71 @@ function criaTabela(prodqtd,maqqtd)
 		}
 		cell1 = head.insertCell(0);
 		cell1.innerHTML = "ACP";
+}
+
+function getCelulasROC(cellqtdROC, destino)
+{
+	var i;
+	document.getElementById(destino).innerHTML = "<br /><table id='t"+destino+"'></table>"
+	var table = document.getElementById("t"+destino);
+	for(i=0; i<cellqtdROC; i++){
+		var row = table.insertRow(i);
+		row.innerHTML = '<tr>PI da célula '+i+':<input type="text" style="width:3vw;" id="piROC'+i+'">PF da célula '+i+':<input type="text" style="width:3vw;" id="pfROC'+i+'"></tr><br />'+
+		'<tr>MI da célula '+i+':<input type="text" style="width:3vw;" id="miROC'+i+'">MF da célula '+i+':<input type="text" style="width:3vw;" id="mfROC'+i+'"></tr><br />';
+	}
+	
+}
+
+function getCelulasCNA(cellqtdCNA, destino)
+{
+	var i;
+	document.getElementById(destino).innerHTML = "<br /><table id='t"+destino+"'></table>"
+	var table = document.getElementById("t"+destino);
+	for(i=0; i<cellqtdCNA; i++){
+		var row = table.insertRow(i);
+		row.innerHTML = '<tr>PI da célula '+i+':<input type="text" style="width:3vw;" id="piCNA'+i+'">PF da célula '+i+':<input type="text" style="width:3vw;" id="pfCNA'+i+'"></tr><br />'+
+		'<tr>MI da célula '+i+':<input type="text" style="width:3vw;" id="miCNA'+i+'">MF da célula '+i+':<input type="text" style="width:3vw;" id="mfCNA'+i+'"></tr><br />';
+	}
+
+}
+
+function eficiencia()
+{
+	var i, j, cont=0, esp_ocup=0, esp_intra=0, eficROC;
+	for(i=0; i<cellqtdROC; i++){
+		for(j=($('#piROC'+i).val())-1; j<($('#pfROC'+i).val()); j++){
+			for(k=($('#miROC'+i).val())-1; k<($('#mfROC'+i).val()); k++){
+				if(matriz[j][k]==1){
+					+cont++;
+				}
+			}
+		}
+		esp_ocup += cont;
+		esp_intra += (+$('#pfROC'+i).val() -$('#piROC'+i).val()) * (+$('#mfROC'+i).val() -$('#miROC'+i).val());
+	}
+	
+	inc_extra = total - esp_ocup;
+	
+	eficROC = ((1-(inc_extra/total))+(esp_ocup/esp_intra))/2;
+	
+	/*cont=0, esp_ocup=0, esp_intra=0;
+	for(i=0; i<cellqtdCNA; i++){
+		for(j=($('#piCNA'+i).val())-1; j<($('#pfCNA'+i).val()); j++){
+			for(k=($('#miCNA'+i).val())-1; k<($('#mfCNA'+i).val()); k++){
+				if(matriz[j][k]==1){
+					+cont++;
+				}
+			}
+		}
+		esp_ocup += cont;
+		esp_intra += (+$('#pfCNA'+i).val() - +$('#piCNA'+i).val()) * (+$('#mfCNA'+i).val() - +$('#miCNA'+i).val());
+	}
+	
+	inc_extra = total - esp_ocup;
+	
+	eficCNA = ((1-(inc_extra/total))+(esp_ocup/esp_intra))/2;
+	*/
+	
+	document.write(eficROC);
+	
 }

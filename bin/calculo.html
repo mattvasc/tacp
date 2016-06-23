@@ -17,42 +17,56 @@
 <body id="bódi">
 	<font face="Verdana"> <center>
     <div id="inputdiv">
-       <!-- <fieldset id="entradas" >
-            <legend>Informações:</legend>-->
 			<div id="entradas">
-				<label> Número de Produtos:
-				<input type="text" name="prodtxt" id="prodtxt">
-				</label><br /> <br />
-				<label> Número de Máquinas:
-				<input type="text" name="maqtxt" id="maqtxt">
-				</label> <br /> <br />
+			<table>
+				<tr><td>Número de Produtos:</td>
+				<td><input type="text" name="prodtxt" id="prodtxt"></td></tr>
+				<tr><td>Número de Máquinas:</td>
+				<td><input type="text" name="maqtxt" id="maqtxt"></td></tr>
+			</table>
 				<input type="button" id="btn4" value="Voltar" onclick="window.location.assign('../index.html');">
 				<input type="button" id="btn1" value="Próximo" onclick="Magica()">
-     <!--   </fieldset>--></div>
+	</div>
   </div></center>
 	<center>
+	<section class="parte 1">
     <div id="mtzdiv"><br />
-    <label id="oh">  Preencha a matriz:</label>
+    <label id="oh">  <b>Preencha a matriz:</b></label>
         <br />
-        <table id="tblin" border="1">
-        </table> <br />
+        <table id="tblin" border="1" style="border-radius:10px;">
+        </table>
         <input type="button" id="bnt3" value="Voltar" style="display:none" onclick="location.reload(); ">
-        <input type="button" id="bnt2" value="Calcular" style="display:none" onclick="Magica2()"><br /> <p></p>
+        <a href="#resultado" style="text-decoration:none;"><input type="button" id="bnt2" value="Calcular" style="display:none" onclick="Magica2()"></a><br /> <p></p>
     </div></center>
 	<br /><br /><br />
+	</section>
     <section id="resultado" style="display:none">
 	<div id="right">
 	<center>
-        <div id="CNA">
+        <div id="CNA" style="overflow-x:auto">
 			
         </div>
+		<div id="eficCNA"></br>
+		Quantidade de células:<input type="number" id="cellCNA" style="margin-left: 1px; width:3vw;" onkeydown="if (event.keyCode == 13) { getCelulasCNA($('#cellCNA').val(), 'addCNA'); }">
+		<div id="addCNA"></div>
 	</center>
+		</div>
 	</div>
 	<div id="left">
 	<center>
-        <div id="ROC">
+        <div id="ROC" style="overflow-x:auto">
 
         </div>
+		<div id="eficROC"></br>
+		Quantidade de células:<input type="number" id="cellROC" style="margin-left: 1px; width:3vw;" onkeydown="if (event.keyCode == 13) { getCelulasROC($('#cellROC').val(), 'addROC'); }">
+		<div id="addROC"></div>
+	</center>
+		</div>
+	<center>
+	<div id="func">
+	<input type="button" id="btn5" value="Calcular eficiência" onclick="eficiencia()">
+	</center>
+	</div>
 	</center>
 	</script>
 	</div>
@@ -78,5 +92,7 @@ document.getElementById("maqtxt")
         document.getElementById("btn1").click();
     }
 });
+
+
 </script>
 </html>
