@@ -23,9 +23,299 @@ function roc()
     }
 
 }
+
+function fazerCna()
+{
+//  maqqtd = 8;
+//  prodqtd = 20;
+  matrizb = [];
+  var i, j, k, cont, maior, indice, aux,
+  sai, segundo_indice, indice1, indice_inicio = 0, linhas,
+  		seq1 = [], seq2 = [], descarta,
+      matrizAux = [], soma=[];
+  		result_linha = [], result_coluna = [];
+      /*matrizcna= [
+      [0,0,0,0,1,1,0,0,0],
+      [1,0,1,0,0,0,0,0,1],
+      [1,1,0,1,0,0,1,1,2],
+      [0,1,0,1,0,0,1,1,3],
+      [0,0,0,0,1,1,0,0,4],
+      [0,1,0,1,1,0,1,1,5],
+      [0,1,0,1,0,0,1,1,6],
+      [1,0,1,0,0,0,0,0,7],
+      [1,0,1,0,0,1,0,0,8],
+      [0,0,0,1,1,1,0,0,9],
+      [1,0,1,0,0,0,1,0,10],
+      [0,0,0,0,1,1,1,0,11],
+      [1,0,1,0,0,0,0,0,12],
+      [1,1,1,0,0,0,0,0,13],
+      [0,0,0,0,1,1,0,0,14],
+      [1,0,1,0,0,0,0,0,15],
+      [1,0,1,0,1,0,0,0,16],
+      [0,1,0,1,0,0,1,1,17],
+      [1,0,1,0,0,0,0,0,18],
+      [0,1,0,1,0,1,1,1,19],
+      [0,1,2,3,4,5,6,7,0]];*/
+
+  	//inicializacoes de vetores
+  	for (i=0; i< maqqtd; i++) {
+  		result_linha[i] = -1;
+  		soma[i] = 0;
+      matrizb[i] = [];
+  	}
+  	for (i=0; i<+prodqtd+1; i++){
+  		result_coluna[i] = -1;
+      matrizAux[i] = [];
+    }
+
+  	//fazer matriz b
+  	for(i=0; i<maqqtd; i++){
+  		for(j=0; j<maqqtd; j++){
+  			if(i!=j){
+  				cont = 0;
+  				for(k=0; k<prodqtd; k++){
+  					if(matrizcna[k][i] == 1 && matrizcna[k][j] == 1){
+  						cont++;
+  					}
+  				}
+  				matrizb[i][j]=cont; // Me inicialize
+  				soma[i]=soma[i] + cont;
+  			}
+  			else{
+  				matrizb[i][j]=' ';
+  			}
+  		}
+  	}
+
+
+
+  	//ORDENAR AS LINHAS DE B (ETAPA 1 DO SLIDE)
+  	//ver primeira linha
+  	maior = soma[0];
+  	for (i=0; i< maqqtd; i++){
+  		if(maior < soma[i])
+  		{
+  			maior = soma[i];
+  			indice = i;
+  		}
+  	}
+  	result_linha[0] = indice;
+
+  	//ver proximas linhas (resto)
+  	for (j=1; j<maqqtd; j++)
+  	{
+  		//inicializar se o 1o nao for nulo ou ja foi
+  		sai = 0;
+  		for (k =0, i = 0 ; (k < maqqtd) || (sai != 1); k++)
+  		{
+  			if(i == result_linha[k])
+  			{
+  				i++;
+  				k=0;
+  			}
+  			else
+  				sai = 1;
+  		}
+  		if (matrizb[indice][i] != 32)
+  		{
+  			maior = matrizb[indice][i];
+  			segundo_indice = i;
+  			indice1=i;
+  			i++;
+  		}
+  		else
+  		{
+  			maior = matrizb[indice][+i+1];
+  			segundo_indice = +i+1;
+  			indice1 = +i+1;
+  			i+=2;
+  		}
+
+  		for (; i< maqqtd; i++){
+  			//ver se ja foi essa linha
+  			sai = 0;
+  			for (k =0 ; k< maqqtd; k++)
+  			{
+  				if(i == result_linha[k])
+  					sai=1;
+  			}
+
+  			if((maior <= matrizb[indice][i]) && (matrizb[indice][i] != 32) && (sai != 1))
+  			{
+  				if (maior == matrizb[indice][i])
+  				{
+  						if (indice1 > i)
+  						{
+  							segundo_indice = i;
+  						}
+  						else
+  						{
+  							segundo_indice = indice1;
+  						}
+  				}
+  				else
+  				{
+  					maior = matrizb[indice][i];
+  					indice1 = i;
+  					segundo_indice = i;
+  				}
+  			}
+  		}
+  		indice = segundo_indice;
+  		result_linha[j] = indice;
+  	}
+
+  	//matriz I ordenada (matrizAux)
+  	for (i=0; i<maqqtd; i++)
+  	{
+  		for (j=0; j<prodqtd; j++)
+  		{
+  			matrizAux[j][i] = matrizcna[j][result_linha[i]]; // Me inicialize?
+  		}
+  	}
+
+  	/*visualizar a matrizAux
+  	for(i=0; i<maqqtd; i++){
+  		for(j=0; j<prodqtd; j++){
+  			printf("%d ", matrizAux[i][j]);
+  		}
+  		printf("\n");
+  	}
+  	*/
+
+  	linhas = maqqtd;
+  	sai = 0;
+  	indice = 0;
+  	while (sai == 0) {
+
+  		//zerar seq1 e seq2
+  		for (i=0; i< prodqtd; i++) {
+  			seq1[i] = 0;
+  			seq2[i] = 0;
+  		}
+
+  		//preencher seq1
+  		for (i=0; i<prodqtd; i++)
+  		{
+  			for (j=indice_inicio; j < (+linhas - (linhas/2)+ indice_inicio); j++)
+  			{
+  				seq1[i] += matrizAux[i][j];
+  			}
+  		}
+
+  		//preencher seq2
+  		for (i=0; i<prodqtd; i++)
+  		{
+  			for (j=+indice_inicio + (linhas/2); j < +linhas+indice_inicio; j++)
+  			{
+  				seq2[i] += matrizAux[i][j];
+  			}
+  		}
+
+  		//ordenar colunas
+  		for (i=0; i< prodqtd; i++)
+  		{
+  			// se o i == algum que ja ta no result colunas,
+  			for (j=0, descarta = 0; j< prodqtd; j++)
+  			{
+  				if(i == result_coluna[j])
+  				{
+  					descarta = 1;
+  				}
+  			}
+  			if(descarta == 0)
+  			{
+  				if (seq1[i] >= seq2[i]){
+  					result_coluna[indice] = i;
+  					indice++;
+  				}
+  			}
+  		}
+
+  		linhas = linhas/2;
+  		indice_inicio = linhas;
+
+  		//condicao de saida
+  		for (i=0, sai = 0;i<prodqtd; i++)
+  			if (result_coluna[i] != -1)
+  				sai++;
+
+  		if (sai == prodqtd)
+  			sai = 1;
+  		else
+  			sai = 0;
+  	}
+    //matrizcna = matrizAux;
+  	/*
+  	printa a ordem das colunas na matriz final
+  	for (i=0; i<prodqtd; i++)
+  		printf("%d ", result_coluna[i]+1);
+  	printf("\n");
+  	*/
+
+  	//matriz I ordenada (matrizFinal)
+  	for (i=0; i<maqqtd; i++)
+  	{
+  		for (j=0; j<prodqtd; j++)
+  		{
+  			matrizcna[j][i] = matrizAux[result_coluna[j]][i];
+  		}
+  	}
+/*
+  	//visualizar a matrizFinal
+  	for(i=0; i<maqqtd; i++){
+  		for(j=0; j<prodqtd; j++){
+  			printf("%d ", matriz[i][j]);
+  		}
+  		printf("\n");
+  	}*/
+
+}
+
 function cna()
 {
-  gerarMatrizcna();
+
+    for(a=0;a<maqqtd;a++)
+      matrizcna[prodqtd][a] = a;
+    for(a=0;a<prodqtd;a++)
+      matrizcna[a][maqqtd] = a;
+
+    gerarMatrizcna();
+    fazerCna();
+}
+function gerarMatrizcna()
+{
+  matrizb = [];
+  var a,b,c,cont;
+  for(a=0;a<maqqtd;a++){ // Criando a matriz em O(maq²);
+      matrizb[a] = [];
+      for(b=0;b<maqqtd;b++){
+          matrizb[a][b] = a===b ? -50 : 0; // Linha de ouro, usei um operador ternário
+          }
+  }
+  matrizb[maqqtd]=[];
+
+    matrizb[maqqtd] = []; // Criando slot forçado para salvar o resultado das somas.
+    for(a=0;a<maqqtd;a++)
+    matrizb[maqqtd][a]=0;
+
+    for(a=0; a<(+maqqtd-1); a++){
+  		for(b=(+a+1); b<maqqtd; b++){
+  		    cont = 0;
+  				for(c=0; c<prodqtd; c++){
+            if(matrizcna[c][a]==0)
+              continue;
+  					if(matrizcna[c][b] == 1){
+  						cont++;
+  					}
+  				}
+  				matrizb[a][b]=cont; matrizb[b][a] = cont;
+  		}
+  	}
+    for(a=0;a<maqqtd;a++)
+      for(b=0;b<maqqtd;b++)
+        if(matrizb[a][b]!==-50)
+          matrizb[maqqtd][a] = (matrizb[maqqtd][a]==null) ? matrizb[a][b] : (+matrizb[maqqtd][a]+matrizb[a][b]);
 }
 
 function lerMatriz() // FULL OK
@@ -312,7 +602,7 @@ function getCelulasROC(cellqtdROC, destino)
 		row.innerHTML = '<tr>PI da célula '+i+':<input type="text" style="width:3vw;" id="piROC'+i+'">PF da célula '+i+':<input type="text" style="width:3vw;" id="pfROC'+i+'"></tr><br />'+
 		'<tr>MI da célula '+i+':<input type="text" style="width:3vw;" id="miROC'+i+'">MF da célula '+i+':<input type="text" style="width:3vw;" id="mfROC'+i+'"></tr><br />';
 	}
-	
+
 }
 
 function getCelulasCNA(cellqtdCNA, destino)
@@ -342,11 +632,11 @@ function eficiencia()
 		esp_ocup += cont;
 		esp_intra += (+$('#pfROC'+i).val() -$('#piROC'+i).val()) * (+$('#mfROC'+i).val() -$('#miROC'+i).val());
 	}
-	
+
 	inc_extra = total - esp_ocup;
-	
+
 	eficROC = ((1-(inc_extra/total))+(esp_ocup/esp_intra))/2;
-	
+
 	/*cont=0, esp_ocup=0, esp_intra=0;
 	for(i=0; i<cellqtdCNA; i++){
 		for(j=($('#piCNA'+i).val())-1; j<($('#pfCNA'+i).val()); j++){
@@ -359,12 +649,12 @@ function eficiencia()
 		esp_ocup += cont;
 		esp_intra += (+$('#pfCNA'+i).val() - +$('#piCNA'+i).val()) * (+$('#mfCNA'+i).val() - +$('#miCNA'+i).val());
 	}
-	
+
 	inc_extra = total - esp_ocup;
-	
+
 	eficCNA = ((1-(inc_extra/total))+(esp_ocup/esp_intra))/2;
 	*/
-	
+
 	document.write(eficROC);
-	
+
 }
