@@ -1,9 +1,12 @@
 .notify{
 	position: fixed;
-	width: 400px;
-	padding: 15px;
+	width: 180px;
+	padding: 8px;
 	z-index: 9999;
 	border-radius: 4px;
+	font-size:12px;
+	font-family: Verdana;
+	text-align: center;
 	-webkit-border-radius: 4px;
 	-webkit-transition: all .4s ease-in-out;
 	-moz-transition: all .4s ease-in-out;
@@ -111,8 +114,9 @@
 	background-color: #fcf8e3;
 }
 .notify-success{
-	color: #3c763d;
-	background-color: #dff0d8;
+	color: white;
+	background-color: #555555;
+	font-weight: bold;
 }
 
 /** position **/

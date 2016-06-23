@@ -9,9 +9,11 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 2.5vmin;
 	-webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
+	margin-top:1em;
+	margin-bottom: 1em;
 }
 
 #btn1:hover {
@@ -30,15 +32,51 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 2.5vmin;
 	-webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
+	margin-top:1em;
+	margin-bottom: 1em;
 }
 
 #btn4:hover {
     background-color: #555555;
     color: white;
 }
+
+#prodtxt{
+	width: 3em;
+}
+
+#maqtxt{
+	width: 3em;
+}
+
+#btn5 {
+    border: none;
+    color: black;
+    padding: 3px 7px;
+	border-radius: 10px;
+    color: black;
+    border: 2px solid #555555;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 3vmin;
+	-webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+	margin-bottom:1em;
+}
+
+#btn5:hover {
+    background-color: #555555;
+    color: white;
+}
+
+#func{
+	min-height:bottom;
+}
+
 
 #bnt2 {
     border: none;
@@ -50,7 +88,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 2.5vmin;
 	-webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
@@ -70,7 +108,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 2.5vmin;
 	--webkit-transition-duration: 0.4s; /* Safari */
     -transition-duration: 0.4s;
 }
@@ -86,14 +124,14 @@
     -webkit-border-radius:10px;
     border-radius:10px;
 	max-width:90%;
-	margin-top:30px;
+	margin-top:2em;
 	overflow: auto;
 	position: relative;
 }
 
 #entradas{
-	margin-top:15px;
-	margin-bottom:15px;
+	margin-top:1em;
+	-margin-bottom:15px;
     overflow:hidden;
 	width:auto;
 	position: relative;
@@ -112,11 +150,32 @@ input[type=button]
 }
 table#tblin
 {
-  margin-left: 40px;
-  margin-right: 40px;
-  margin-bottom: 7px;
+  margin-left: 3em;
+  margin-right: 3em;
+  margin-bottom: 1em;
+  margin-top:1em;
   text-align: center;
+  background-color:#008989;
+  -border: 1px #004d4d;
+  -border-collapse:collapse;
 }
+
+#campo1{
+	width:2.5em;
+}
+
+#campo2{
+	width:6em;
+}
+
+#campo3{
+	width:2.5em;
+}
+
+#campo4{
+	width:6em;
+}
+
 
 #roc {
   --width: auto;
@@ -133,8 +192,7 @@ table#tblin
 #left, #right {
     display: inline-block;
     width: 45%;
-    height: 100%;
-	overflow: auto;
+    -height: 100%;
 } 
 
 #left  { float: left;  }
