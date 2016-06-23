@@ -12,45 +12,47 @@
 		<script type="text/javascript" src="./bin/src/notify.js"></script>
 		<script type="text/javascript" src="./bin/src/prettify.js"></script>
 		<link href='./bin/css/onepage-scroll.css' rel='stylesheet' type='text/css'>
-    </head>
+		<script src="javascripts/jquery.js" type="text/javascript"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</script>
+	</head>
     <body id="bódi">
 	  <div class="main">
 		<section class="parte1">
 			<center>
 			<div id="cabecalho">
-			<br /><b>ARRANJO FÍSICO CELULAR</b>
+			<br /><b id="title">ARRANJO FÍSICO CELULAR</b>
 			</div>
 			<font face="Verdana">
 			<br />
-			
-			<!--<button id=btn2 onclick="  $('.main').moveDown();">Objetivo</button>-->
-			
-			<br /><br /><br /><br />
+			<input type="button" id="btn1" value="Como usar" onclick="manual()">
+			<br /><br />
 			</center>
 			<div id="apresentacao">
 			<center>
 			  Desenvolvido por:<br /><br />
+			  <div class="parte1">
 			  <div id="borda">
-			  <img src="./bin/img/danielle.jpg" id="foto1" style="float:left;width:60px;height:60px;"/>
+			  <img src="./bin/img/danielle.jpg" id="foto1" class="teste" style="float:left;width:15%;height:auto;"/>
 			  </img>
 			  <b>
-			  <br />Danielle Laizi Nakachima | RA: 620513
+			  <br />Danielle Laizi Nakachima |620513|
 			  </div><br />
 			  <div id="borda">
-			  <img src="./bin/img/giovanna.jpg" id="foto2" style="float:right;width:60px;height:60px;"/>
+			  <img src="./bin/img/giovanna.jpg" id="foto2" class="teste" style="float:right;width:15%;height:auto;"/>
 			  </img>
-			  <br />Giovanna Blasco Martin | RA: 620378
+			  <br />Giovanna Blasco Martin |620378|
 			  </div><br />
 			  <div id="borda">
-			  <img src="./bin/img/lucas.jpg" id="foto3" style="float:left;width:60px;height:60px;"/>
+			  <img src="./bin/img/lucas.jpg" id="foto3" class="teste" style="float:left;width:15%;height:auto;"/>
 			  </img>
-			  <br />Lucas Rigo Yoshimura | RA: 620092
+			  <br />Lucas Rigo Yoshimura |620092|
 			  </div><br />
 			  <div id="borda">
-			  <img src="./bin/img/mateus.png" id="foto4" style="float:right;width:60px;height:60px;"/>
+			  <img src="./bin/img/mateus.jpg" id="foto4" class="teste" style="float:right;width:15%;height:auto;"/>
 			  </img>
-			  <br />Mateus Silva Vasconcelos | RA: 620580
-			  </div><br /><br /></b><input type="button" id="btn1" value="Manual" onclick="manual()">
+			  <br />Mateus Silva Vasconcelos |620580|
+			  </div></div><br /><br /></b>
 			 </center></section><center>
 			</section>
 		<section class="parte2">
@@ -61,23 +63,23 @@
 			Ambos algoritmos reorganizam as linhas referentes às máquinas 
 			e as colunas referentes aos produtos de uma Matriz de Incidência para identificar 
 			células de manufatura e famílias de produtos, pelo critério de semelhança de processos.
-			<br /><img src="./bin/img/factory.png" align="center" width="700px" height="auto"/><br />
+			<br /><img src="./bin/img/factory.png" align="center" class="teste1" style="width:80%;height:auto;"><br />
 			</div>
 			</section>
 		<section class="parte3">
 			<div id="info">
-			<br /><b>TRABALHO DE AUTOMAÇÃO DE CADEIAS DE PRODUÇÃO</b><br />
+			<br /><b>PROJETO DE AUTOMAÇÃO DE CADEIAS DE PRODUÇÃO</b><br />
 			Disciplina do Bacharelado em Ciência da Computação<br />
 			Ministrada pelo professor José Geraldo Vidal Vieira<br />
 			Desenvolvido em JavaScript, HTML5 e CSS<br />
 			1º Semestre de 2016<br /><br />
 			<a href="http://www.dcomp.sor.ufscar.br/">
-			<img src="./bin/img/dcomp.png" align="center" width="200px" height="auto"/></a>
+			<img src="./bin/img/dcomp.png" align="center" class="teste2" style="width:20%;height:auto;"/></a>
 			<br /><br />
 			<a href="http://www.sorocaba.ufscar.br/ufscar/">
-			<img src="./bin/img/ufscar.png" align="center" width="200px" height="auto"/></a><br /><br />
-			<input type="button" id="btn" value="Iniciar" onclick="inicio()"><br /><br />
+			<img src="./bin/img/ufscar.png" align="center" class="teste2" style="width:20%;height:auto;"/></a><br /><br />
 			</div>
+			<br /><br /><input type="button" id="btn" value="Iniciar" onclick="inicio()"><br /><br />
 		</section>
 		</center>
 		</div>
@@ -101,7 +103,7 @@
 				}
 				
 				$(document).ready(function(){
-				$.notify("Deslize a Página para continuar!", {delay:3500,type:"success",align:"right", verticalAlign:"bottom"});
+				$.notify("Deslize para continuar", {delay:3500,type:"success", align:"right", verticalAlign:"bottom"});
 				  $(".main").onepage_scroll({
 					sectionContainer: "section",
 					responsiveFallback: 600,

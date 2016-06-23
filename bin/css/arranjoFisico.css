@@ -1,3 +1,8 @@
+#main{
+	height:auto;
+	width:auto;
+}
+
 #btn {
     border: none;
     color: black;
@@ -8,7 +13,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 30px;
+    font-size: 5.9vmin;
 	-webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
@@ -28,7 +33,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 30px;
+    font-size: 5vmin;
 	-webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
@@ -48,7 +53,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 30px;
+    font-size: 5vmin;
 	-webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
@@ -68,8 +73,8 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 12px;
-	-webkit-transition-duration: 0.4s; /* Safari */
+    font-size: 5vmin;
+	-webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
 
@@ -81,7 +86,7 @@
 #bódi{
 	background-color: #66CCCC;
 	--width: 700px;
-	height: 1000px;
+	height: 100%;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:justify;
@@ -89,12 +94,16 @@
 
 #cabecalho{
 	width: auto;
-  height: 150px;
+  height: 15%;
   background-color: #555555;
   color: white;
   text-align:left;
-  font-size:40px;
+  font-size:7vmin;
   font-family: Tahoma;
+}
+
+#title{
+	margin-left: 10px;
 }
 
 #foto1{
@@ -121,28 +130,25 @@
 	margin-top: 90px;
 	width: 700px;
     height: auto;
-	background-color: #009999;
-	-moz-border-radius:10px;
-  -webkit-border-radius:10px;
-  border-radius:10px;
 } 
 
 #info {
-	margin-top: 110px;
+	margin-top: 40px;
 	font-size:18px;
 	width: 700px;
 	background-color: #009999;
-  -moz-border-radius:10px;
-  -webkit-border-radius:10px;
-  border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border-radius:10px;
 }
 
 #left  { float: left;  }
 #right { float:right; }
 
 #borda{
-  width: 450px;
-  height: 60px;
+  width: 35%;
+  height:4.5em;
+  font-size:2.5vmin;
   background-color: #009999;
   -moz-border-radius:10px;
   -webkit-border-radius:10px;
